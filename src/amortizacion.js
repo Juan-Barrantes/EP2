@@ -43,10 +43,10 @@ function loadScreen (){
     <table id="lista-tabla" class="table">
     <thead>
         <tr>
-            <th>Fecha</th>
-            <th>Cuota</th>
-            <th>Capital</th>
+            <th>Parc</th>
+            <th>Amortización</th>
             <th>Interés</th>
+            <th>Pago</th>
             <th>Saldo</th>
         </tr>
     </thead>
@@ -70,4 +70,8 @@ function loadScreen (){
 
 
 document.addEventListener('DOMContentLoaded',loadScreen);
+
+function amortización(){
+    const monto = document.querySelector()
+}
 
