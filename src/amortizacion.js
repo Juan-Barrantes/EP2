@@ -26,18 +26,26 @@ function loadScreen (){
     containerForm.innerHTML=`
                 <h2>Calcular deuda 💰</h2>
                 <div class="form-group">
-                    <label for="monto">Monto</label>
-                    <input type="number" class="form-control" id="monto" placeholder="Ingresar monto">
+                    <label for="monto">Valor del bien adquirido</label>
+                    <input type="number" class="form-control" id="valorBien" placeholder="Valor del Bien" min="0" >
+                </div>
+                <div class="form-group">
+                    <label for="monto">Inicial</label>
+                    <input type="number" class="form-control" id="inicial" placeholder="Valor inicial" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="monto">Deuda</label>
+                    <input type="number" class="form-control" id="monto" placeholder="Préstamo" disabled>
                 </div>
                 <div class="form-group">
                     <label for="tiempo">Meses</label>
-                    <input type="number" class="form-control" id="tiempo" placeholder="Ingresar cantidad de meses">
+                    <input type="number" class="form-control" id="tiempo" placeholder="Ingresar cantidad de meses" min="1">
                 </div>
                 <div class="form-group">
                     <label for="interes">Tasa Anual (i%)</label>
-                    <input type="number" class="form-control" id="interes" placeholder="Ingresar tasa de interés mensual">
+                    <input type="number" class="form-control" id="interes" placeholder="Ingresar tasa de interés mensual" min="0">
                 </div>
-                <button type="submit" class="btn btn-primary" id="btnCalcular" onclick='tableAmortización()'>Calcular</button>
+                <button type="submit" class="btn btn-primary" id="btnCalcular" onclick='validarInicial()'>Calcular</button>
                 <button type="submit" class="btn btn-primary" id="btnReset" onclick='reset()' disabled >Reset</button>
     `;
     containerTable.innerHTML = `
@@ -77,7 +85,12 @@ function loadScreen (){
 //capturar valores
 function tableAmortización(){
     //Identificación y selección de elementos
-    let monto = document.getElementById("monto").value;
+    let valorBien = document.getElementById('valorBien').value;
+    let inicial = document.getElementById('inicial').value;
+    
+    let monto = valorBien-inicial;
+    document.getElementById('monto').setAttribute('value',`${monto}`);
+
     const meses = document.getElementById('tiempo').value;
     const interes = document.getElementById('interes').value;
     const button = document.getElementById('btnCalcular');
@@ -118,20 +131,41 @@ function tableAmortización(){
 }
 
 function reset(){
+    document.getElementById('btnCalcular').disabled=false;
     const buttonReset = document.getElementById('btnReset');
-    
+
     //document.getElementById('idTr').remove();
     const tableTr = document.getElementsByClassName('classTr');
     while(tableTr.length > 0){
         tableTr[0].parentNode.removeChild(tableTr[0]);
     }
     //tableTr.parentNode.removeChild(tableTr);
-
-    document.getElementById('btnCalcular').disabled=false;
-    buttonReset.disabled = true;
-
+    buttonReset.disabled = true;    
     const saldoInicial = document.querySelector('#saldoInicial').innerHTML='';
+
+    //Borrando datos de los inputs
+    document.getElementById('valorBien').value = "";
+    document.getElementById('inicial').value = "";
+    document.getElementById('tiempo').value = "";
+    document.getElementById('interes').value = "";
+    
 }
 //mostrar tablas
+
+
+function validarInicial(){
+    document.getElementById('btnReset').disabled=false;
+
+    let valorBien = document.getElementById('valorBien').value;
+    let inicial = document.getElementById('inicial').value;
+
+    if(inicial>=0.2*valorBien && inicial<=0.8*valorBien){
+        tableAmortización();
+    }else{
+        alert("Inicial fuera de rango (20%-80%) 📢‼");
+        alert("Presiona Reset para volver a intentar");
+        document.getElementById('btnCalcular').disabled = true;
+    }
+}
 
 document.addEventListener('DOMContentLoaded',loadScreen);
