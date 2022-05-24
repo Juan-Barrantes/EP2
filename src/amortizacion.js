@@ -59,6 +59,7 @@ function loadScreen (){
             <th>Amortización</th>
             <th>Interés</th>
             <th>Pago</th>
+            <th>Desgravamen</th>
             <th>Saldo</th>
         </tr>
         
@@ -99,7 +100,7 @@ function tableAmortización(){
     const saldoInicial = document.querySelector('#saldoInicial');
     
     //Mostrar saldo inicial
-    saldoInicial.innerHTML = `Saldo inicial: ${monto}`
+    saldoInicial.innerHTML = `Deuda: ${monto}`
    
     // Hallando datos para la tabla
     let columnaIntereses = 0;
@@ -113,6 +114,8 @@ function tableAmortización(){
         columnaIntereses = parseFloat(monto*(interes/100));
         columnaAmortizacion = cuota-columnaIntereses;
         monto = parseFloat(monto-columnaAmortizacion);
+        columnaDesgravamen = parseFloat(monto*0.005);
+
 
         const fila = document.createElement('tr');
         fila.setAttribute("class","classTr")
@@ -122,6 +125,7 @@ function tableAmortización(){
         <td>${columnaAmortizacion.toFixed(2)}</td>    
         <td>${columnaIntereses.toFixed(2)}</td>
         <td>${cuota.toFixed(2)}</td>
+        <td>${columnaDesgravamen.toFixed(2)}</td>
         <td>${monto.toFixed(2)}</td>
         `;
         cargarDatos.appendChild(fila);   
